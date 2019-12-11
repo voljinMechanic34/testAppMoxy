@@ -23,16 +23,14 @@ public class TestPresenter extends MvpPresenter<TestView> {
 
     public TestPresenter(String k) {
         //loadNews(k);
-
     }
-
     public   void getData(){
         ApiTest apiTest = ApiClient.getApiService();
         apiTest.getAllTodo().enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 if (response.isSuccessful()){
-                   // Log.d("MainActivity",response.body().getView().get(1));
+
                   List<Datum> listDatum =   parseData(response.body());
                   getViewState().showData(listDatum);
                 }
@@ -56,12 +54,12 @@ public class TestPresenter extends MvpPresenter<TestView> {
         for (int i = 0 ;i < viewSize ;i++){
             for (int j =0 ; j < dataSize; j ++){
                 if (listView.get(i).equals(datumList.get(j).getName())){
-                   // Log.i("MainActivity", "true");
+
                     newDatumList.add(datumList.get(j));
                 }
             }
         }
-        //Log.i("MainActivity", String.valueOf(newDatumList.size()));
+
         // приводим список selectors к общему виду обьекта Datum
         List<VariantText> variantTextList = new ArrayList<>();
         int pos = 0;
@@ -86,18 +84,12 @@ public class TestPresenter extends MvpPresenter<TestView> {
         }
         for (int i = 0; i< variantTextList.size();i++){
             newDatumList.add(p,new Datum(variantTextList.get(i),"selector"));
-            Log.i("MainActivity", String.valueOf(p));
+
             p++;
 
         }
 
-        for (int i = 0; i< newDatumList.size();i++){
-            if (newDatumList.get(i).getName().equals("selector"))
-                Log.i("MainActivity", newDatumList.get(i).getName()+newDatumList.get(i).getVariantText().getText());
-            else
-                Log.i("MainActivity", newDatumList.get(i).getName());
-        }
-        Log.i("MainActivity", String.valueOf(newDatumList.size()));
+
 
         return newDatumList;
     }
