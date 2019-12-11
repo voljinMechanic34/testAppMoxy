@@ -20,14 +20,12 @@ import retrofit2.Response;
 
 @InjectViewState
 public class TestPresenter extends MvpPresenter<TestView> {
-    String k;
+
     public TestPresenter(String k) {
         //loadNews(k);
-        Log.d("qwe",k);
+
     }
-    private void loadNews(String k) {
-        //getViewState().showData(k);
-    }
+
     public   void getData(){
         ApiTest apiTest = ApiClient.getApiService();
         apiTest.getAllTodo().enqueue(new Callback<Example>() {
@@ -35,7 +33,8 @@ public class TestPresenter extends MvpPresenter<TestView> {
             public void onResponse(Call<Example> call, Response<Example> response) {
                 if (response.isSuccessful()){
                    // Log.d("MainActivity",response.body().getView().get(1));
-                    parseData(response.body());
+                  List<Datum> listDatum =   parseData(response.body());
+                  getViewState().showData(listDatum);
                 }
 
             }
@@ -47,7 +46,7 @@ public class TestPresenter extends MvpPresenter<TestView> {
         });
     }
 
-    private void parseData(Example body) {
+    private ArrayList<Datum> parseData(Example body) {
         ArrayList<Datum> newDatumList = new ArrayList<>();
         List<String> listView = body.getView();
         List<Datum> datumList = body.getData();
@@ -100,6 +99,6 @@ public class TestPresenter extends MvpPresenter<TestView> {
         }
         Log.i("MainActivity", String.valueOf(newDatumList.size()));
 
-        getViewState().showData(newDatumList);
+        return newDatumList;
     }
 }
